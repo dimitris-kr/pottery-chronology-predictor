@@ -5,7 +5,14 @@ import {RequestParams} from '../models/request-params';
 import {map, Observable} from 'rxjs';
 import {PaginatedResponse} from '../models/paginated-response';
 import {cleanParams} from '../utils/helpers';
-import {Model, ModelFilters, ModelVersion, ModelVersionFilters, ModelVersionSortBy} from '../models/model';
+import {
+    Model,
+    ModelFilters,
+    ModelVersion,
+    ModelVersionFilters,
+    ModelVersionSortBy,
+    TargetScores
+} from '../models/model';
 import {parseBackendDate} from '../utils/dates';
 
 @Injectable({
@@ -59,6 +66,11 @@ export class ApiModels {
             .pipe(
                 map(items => (items.map((raw: any) => this.normalize(raw))))
             );
+    }
+
+    getSingleScores(id: number): Observable<TargetScores[]> {
+        return this.http
+            .get<TargetScores[]>(`${this.url}/${id}/scores`);
     }
 
     private normalize(raw: any): ModelVersion {

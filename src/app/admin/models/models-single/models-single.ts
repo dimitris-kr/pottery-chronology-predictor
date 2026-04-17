@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Model, ModelVersion, ModelVersionFilters, ModelVersionSortBy} from '../../../core/models/model';
+import {Model, ModelVersion, ModelVersionFilters, ModelVersionSortBy, TargetScores} from '../../../core/models/model';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {ApiModels} from '../../../core/services/api-models';
 import {filter, map, switchMap} from 'rxjs';
@@ -23,6 +23,7 @@ import {DatePipe, DecimalPipe, NgStyle, PercentPipe} from '@angular/common';
 import {
     ModelVersionProgressChart
 } from '../../../reusable/charts/model-version-progress-chart/model-version-progress-chart';
+import {ModelScoresChart} from '../../../reusable/charts/model-scores-chart/model-scores-chart';
 
 @Component({
     selector: 'app-models-single',
@@ -48,7 +49,8 @@ import {
         NgStyle,
         DatePipe,
         MatPaginator,
-        ModelVersionProgressChart
+        ModelVersionProgressChart,
+        ModelScoresChart
     ],
     templateUrl: './models-single.html',
     styleUrl: './models-single.scss',
@@ -82,6 +84,8 @@ export class ModelsSingle {
 
     versionsAll: ModelVersion[] = [];
 
+    scores: TargetScores[] = [];
+
     constructor(
         private route: ActivatedRoute,
         private modelsApi: ApiModels,
@@ -100,6 +104,7 @@ export class ModelsSingle {
                 this.versions.params.filters.model_id = model.id;
                 this.loadVersions();
                 this.loadAllVersions();
+                this.loadScores();
             });
     }
 
@@ -129,6 +134,14 @@ export class ModelsSingle {
         this.modelsApi
             .getSingleVersions(this.model.id)
             .subscribe(versions => this.versionsAll = versions);
+    }
+
+    loadScores() {
+        if (!this.model) return;
+
+        this.modelsApi
+            .getSingleScores(this.model.id)
+            .subscribe(scores => this.scores = scores);
     }
 
     onSortChange(sort: Sort): void {

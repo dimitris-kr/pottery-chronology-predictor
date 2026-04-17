@@ -183,33 +183,34 @@ function interpolateColor(c1: any, c2: any, t: number) {
     };
 }
 
-const fixedMaxMae = 100;
+const fixedMax = 100;
 const GRAY = '#9E9E9E';
 const RED = hexToRgb('#c6564b');
 const YELLOW = hexToRgb('#C7A748');
 const GREEN = hexToRgb('#83A756');
+export const HIGH_IS_GOOD = ['accuracy', 'precision', 'recall', 'f1', 'r2'];
+export const LOW_IS_GOOD = ['mae', 'rmse', 'medae'];
 
-export function getScoreColor(value: number | null, type: 'accuracy' | 'mae', dataMaxMae?: number): string {
+export function getScoreColor(value: number | null, metric: string, dataMax?: number): string {
     if (value === null || value === undefined) {
         return GRAY;
     }
 
+    metric = metric.toLowerCase();
+
     let normalized: number;
 
-    if (type === 'accuracy') {
+    if (HIGH_IS_GOOD.includes(metric)) {
         normalized = value; // assuming already 0–1
+    } else if (LOW_IS_GOOD.includes(metric)) {
+        if (!dataMax || dataMax === 0) return GRAY;
+        const max = Math.max(dataMax, fixedMax);
+        normalized = 1 - (value / max); // invert (low = good)
     } else {
-        if (!dataMaxMae || dataMaxMae === 0) return GRAY;
-        const maxMae = Math.max(dataMaxMae, fixedMaxMae);
-        normalized = 1 - (value / maxMae); // invert (low = good)
+        return GRAY;
     }
 
     normalized = Math.max(0, Math.min(1, normalized));
-
-    /*// 0 = red (0deg), 1 = green (120deg)
-    const hue = normalized * 120;
-
-    return `hsl(${hue}, 60%, 45%)`;*/
 
     let color;
 
@@ -225,3 +226,4 @@ export function getScoreColor(value: number | null, type: 'accuracy' | 'mae', da
 
     return rgbToCss(color);
 }
+

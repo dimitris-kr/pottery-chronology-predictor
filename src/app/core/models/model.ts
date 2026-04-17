@@ -45,3 +45,15 @@ export interface ModelFilters {
 export interface ModelVersionFilters {
     model_id: number;
 }
+
+export interface MetricScore {
+    metric: string;
+    value: number;
+}
+
+export type TargetLiteral = 'historical_period' | 'start_year' | 'year_range'
+
+export interface TargetScores {
+    target: TargetLiteral;
+    scores: MetricScore[];
+}

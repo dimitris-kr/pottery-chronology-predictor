@@ -9,7 +9,7 @@
         </div>
         @if (model) {
             <div class="flex column gap-2">
-                <div class="flex row justify-start align-center gap-2">
+                <div class="flex row justify-start align-center gap-2 wrap">
                     <h3 class="m-0">{{ capitalize(model.task.name) }} Model: </h3>
                     <div class="badge primary">
                         {{ model.name.toUpperCase() }}
@@ -55,6 +55,17 @@
     </div>
 
     @if (model) {
+        <div class="flex column gap-3">
+            <div class="px-4 flex row gap-2 justify-start align-center">
+                <h3 class="m-0">Current Version Evaluation</h3>
+            </div>
+
+            <app-model-scores-chart
+                [scores]="scores">
+            </app-model-scores-chart>
+
+        </div>
+
         <div class="flex column gap-3">
             <div class="px-4 flex row gap-2 justify-start align-center">
                 <h3 class="m-0">All Versions</h3>

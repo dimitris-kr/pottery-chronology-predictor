@@ -1,0 +1,71 @@
+<div class="flex row wrap justify-between align-stretch gy-5">
+
+    <div class="w-8 flex align-stretch">
+        <div class="card p-4 w-100 flex column gap-5">
+            <h5>Scores for Predicting Validation Data during Training</h5>
+            <!-- Charts -->
+
+            @if (highOption) {
+                <div class="flex column gap-1">
+                    <h6>Performance (Higher is better)</h6>
+                    <div
+                        echarts
+                        [options]="highOption"
+                        class="chart"
+                        [ngStyle]="{height: highHeight}">
+                    </div>
+                </div>
+
+            }
+
+            @if (lowOption) {
+                <div class="flex column gap-1">
+                    <h6>Error (Lower is better)</h6>
+                    <div
+                        echarts
+                        [options]="lowOption"
+                        class="chart"
+                        [ngStyle]="{height: lowHeight}">
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="w-4 flex align-stretch">
+        <div class="card p-4 w-100 flex column gap-5 justify-start align-start">
+            <div class="filters flex column gap-2">
+                <h6>Choose Target</h6>
+                <mat-button-toggle-group
+                    [value]="selectedTarget"
+                    (change)="onTargetChange($event.value)"
+                >
+                    @for (t of scores; track t.target) {
+                        <mat-button-toggle [value]="t.target">
+                            {{ capitalize(t.target.replace('_', ' ')) }}
+                        </mat-button-toggle>
+                    }
+                </mat-button-toggle-group>
+            </div>
+
+            <div class="index flex column gap-3">
+                <h6>Index</h6>
+                @for (metric of metricsInfo; track metric.title) {
+                    <div class="metric-block">
+                        <div class="title">
+                            <strong>{{ metric.title }}</strong>
+                        </div>
+                        <div class="label">
+                            <small><strong>{{ metric.label }}</strong></small>
+                        </div>
+                        <div class="description">
+                            <small>{{ metric.description }}</small>
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+
+</div>
