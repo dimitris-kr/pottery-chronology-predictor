@@ -41,7 +41,7 @@ export class FeedbackCreateForm {
 
     form: FormGroup;
 
-    eras: string[] = ['BC', 'AD'];
+    eras: string[] = ['BCE', 'CE'];
 
     constructor(
         private fb: FormBuilder,
@@ -54,10 +54,10 @@ export class FeedbackCreateForm {
                 object_id: [null as string | null],
 
                 start_year: [null as number | null, [Validators.required, Validators.min(0)]],
-                start_era: ['BC', Validators.required],
+                start_era: ['BCE', Validators.required],
 
                 end_year: [null as number | null, [Validators.required, Validators.min(0)]],
-                end_era: ['BC', Validators.required],
+                end_era: ['BCE', Validators.required],
             },
             {
                 validators: [this.chronologyRangeValidator()],

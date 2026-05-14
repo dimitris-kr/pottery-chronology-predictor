@@ -26,6 +26,8 @@ import {Alert} from '../../../core/services/alert';
 import {FeedbackConnectForm} from '../../../reusable/feedback-connect-form/feedback-connect-form';
 import {MatTab, MatTabGroup} from '@angular/material/tabs';
 import {FeedbackCreateForm} from '../../../reusable/feedback-create-form/feedback-create-form';
+import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
+import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-predictions-single',
@@ -50,7 +52,12 @@ import {FeedbackCreateForm} from '../../../reusable/feedback-create-form/feedbac
         FeedbackConnectForm,
         MatTabGroup,
         MatTab,
-        FeedbackCreateForm
+        FeedbackCreateForm,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatButtonToggleGroup,
+        MatButtonToggle
     ],
   templateUrl: './predictions-single.html',
   styleUrl: './predictions-single.scss',

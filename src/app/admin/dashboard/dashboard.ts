@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
+import {PredictionForm} from '../../reusable/prediction-form/prediction-form';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+    imports: [
+        PredictionForm
+    ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })

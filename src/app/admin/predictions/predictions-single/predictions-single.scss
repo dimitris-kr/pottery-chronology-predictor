@@ -1,4 +1,4 @@
-.legend-wrapper{
+.legend-wrapper {
     max-width: 160px;
 
     table.vertical.legend {
@@ -9,7 +9,7 @@
         }
 
         tr:first-child {
-            th,td {
+            th, td {
                 font-weight: 600 !important;
                 color: var(--text-color-secondary);
             }
@@ -20,4 +20,32 @@
 .mat-mdc-tab-header {
     padding: 0 30px;
 
+}
+
+.input-data .mdc-text-field__input {
+    color: var(--text-color-body);
+}
+
+.input-data mat-label {
+    color: var(--text-color-secondary);
+}
+
+.chronology-toggle.readonly {
+    // Selected toggle: full opacity, looks like a label
+    .mat-button-toggle-checked {
+        color: var(--mat-button-toggle-selected-state-text-color, var(--mat-sys-on-secondary-container));
+        background-color: var(--mat-button-toggle-selected-state-background-color, var(--mat-sys-secondary-container));
+
+    }
+}
+
+.card {
+    &.chronology {
+        min-height: 80px;
+
+        &.prediction {
+            border: 2px solid color-mix(in oklab, var(--orange-20) 30%, transparent);
+            box-shadow: 0 5px 25px -10px color-mix(in oklab, var(--orange-20) 50%, transparent);
+        }
+    }
 }

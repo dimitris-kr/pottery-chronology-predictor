@@ -24,7 +24,7 @@ import {Alert} from '../../core/services/alert';
         MatButtonToggleGroup,
         MatButtonToggle,
         MatButton,
-        JsonPipe,
+        // JsonPipe,
         AsyncPipe
     ],
     templateUrl: './prediction-form.html',

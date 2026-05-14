@@ -13,13 +13,13 @@ export function shorten(text: string, maxWords: number = 10): string {
 
 export function formatYear(year: number): string {
     let yearAbs = Math.abs(year);
-    if (year < 0) return `${yearAbs} BC`;
-    else if (year > 0) return `${yearAbs} AD`;
+    if (year < 0) return `${yearAbs} BCE`;
+    else if (year > 0) return `${yearAbs} CE`;
     else return `${yearAbs}`;
 }
 
-export function toSignedYear(year: number, era: 'BC' | 'AD'): number {
-    return era === 'BC' ? -Math.abs(year) : Math.abs(year);
+export function toSignedYear(year: number, era: 'BCE' | 'CE'): number {
+    return era === 'BCE' ? -Math.abs(year) : Math.abs(year);
 }
 
 export function cleanParams<T extends Record<string, any>>(obj: T): { [p: string]: any } {

@@ -20,10 +20,104 @@
     </div>
 
     @if (prediction) {
+
         <div class="flex row wrap justify-between align-stretch gy-4">
-            <div class="w-5 flex align-stretch">
-                <div class="card w-100 p-4 flex column justify-center">
-                    <div class="badge primary card-title">
+            <div class="w-100 flex align-stretch input-data">
+                <div class="card w-100 p-4 flex column gap-4">
+                    <div class="flex column gap-3">
+                        <div class="flex row gap-2 justify-start align-center">
+                            <h5 class="m-0">Input Data</h5>
+                            <button
+                                matIconButton
+                                aria-label="help"
+                                matTooltip="The text and/or image that was submitted for this prediction."
+                                matTooltipPosition="after"
+                            >
+                                <mat-icon>info</mat-icon>
+                            </button>
+                        </div>
+
+                        <div class="flex row wrap justify-between gy-2">
+                            <!-- Description (read-only) -->
+                            <div class="w-6">
+                                <mat-form-field appearance="outline" floatLabel="always"
+                                                class="w-100 description-field">
+                                    <mat-label>Description</mat-label>
+
+                                    <textarea
+                                        matInput
+                                        rows="7"
+                                        readonly
+                                        [value]="prediction.input_text || '-'"
+                                        placeholder="-"
+                                        disabled
+                                    ></textarea>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Image (read-only) -->
+                            <div class="w-6">
+                                <div
+                                    class="image-upload readonly"
+                                >
+                                    <span class="label">Image</span>
+
+                                    @if (prediction.input_image_path) {
+                                        @if (imageUrl) {
+                                            <img [src]="imageUrl" loading="lazy" alt="Pottery Image"/>
+                                        } @else {
+                                            <div class="placeholder">
+                                                <mat-spinner diameter="25"></mat-spinner>
+                                            </div>
+                                        }
+                                    } @else {
+                                        <div class="placeholder">
+                                            <mat-icon class="upload-icon">image_not_supported</mat-icon>
+                                            <p>No image provided</p>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex column gap-3">
+                        <div class="flex row gap-2 justify-start align-center">
+                            <h5 class="m-0">Chronology Type</h5>
+                            <button
+                                matIconButton
+                                aria-label="help"
+                                matTooltip="The type of chronology that was predicted."
+                                matTooltipPosition="after"
+                            >
+                                <mat-icon>info</mat-icon>
+                            </button>
+                        </div>
+
+                        <div>
+                            <mat-button-toggle-group
+                                [value]="isClassification(prediction) ? 'classification' : 'regression'"
+                                disabled
+                                class="chronology-toggle readonly"
+                            >
+                                <mat-button-toggle value="classification">
+                                    Historical Period
+                                </mat-button-toggle>
+
+                                <mat-button-toggle value="regression">
+                                    Exact Years
+                                </mat-button-toggle>
+                            </mat-button-toggle-group>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex row wrap justify-between align-stretch gy-4">
+            <div class="w-100 flex align-stretch">
+                <div class="card w-100 p-4 flex column justify-center prediction chronology">
+                    <div class="badge accent card-title">
                         Predicted {{ isClassification(prediction) ? 'Historical Period' : 'Year Range' }}
                     </div>
 
@@ -38,45 +132,6 @@
                             – {{ formatYear(prediction.end_year) }}
                         </div>
                     }
-                </div>
-            </div>
-            <div class="w-7 w-100 flex align-stretch">
-                <div class="card p-4 flex column justify-center data-card">
-                    <div class="badge primary card-title">
-                        Input Data
-                    </div>
-                    <div class="flex row wrap justify-between align-stretch gy-3">
-                        <div class="w-7">
-                            <h5>Description</h5>
-                            <p>@if (prediction.input_text) {
-                                {{ prediction.input_text }}
-                            } @else {
-                                -
-                            }
-                            </p>
-                        </div>
-                        <div class="w-5">
-                            <h5>Image</h5>
-                            @if (prediction.input_image_path) {
-                                <div class="image-container">
-                                    @if (imageUrl) {
-
-                                        <img
-                                            [src]="imageUrl"
-                                            loading="lazy"
-                                            alt="Pottery Image"
-                                        >
-
-
-                                    } @else {
-                                        <mat-spinner diameter="25"></mat-spinner>
-                                    }
-                                </div>
-                            } @else {
-                                -
-                            }
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -104,11 +159,11 @@
 
             @if (prediction.status === "validated" && prediction.pottery_item) {
 
-                <div class="flex row wrap justify-between align-stretch gy-4">
+                <div class="flex row wrap justify-between align-stretch gy-5">
                     @if (prediction.pottery_item.chronology_label) {
                         @if (isClassification(prediction)) {
-                            <div class="w-5 flex align-stretch">
-                                <div class="card w-100 p-4 flex column justify-center">
+                            <div class="w-100 flex align-stretch">
+                                <div class="card w-100 p-4 flex column justify-center chronology">
                                     <div class="badge primary card-title">
                                         True Historical Period
                                     </div>
@@ -122,8 +177,8 @@
                                 </div>
                             </div>
                         } @else {
-                            <div class="w-5 flex align-stretch">
-                                <div class="card w-100 p-4 flex column justify-center">
+                            <div class="w-100 flex align-stretch">
+                                <div class="card w-100 p-4 flex column justify-center chronology">
                                     <div class="badge primary card-title">
                                         True Year Range
                                     </div>
@@ -135,7 +190,7 @@
                                 </div>
                             </div>
                         }
-                        <div class="w-3 flex align-stretch">
+                        <div class="w-4 flex align-stretch">
                             <div class="card w-100 p-4 flex column justify-center">
                                 <div class="badge primary card-title">
                                     Comparison
@@ -150,15 +205,22 @@
                         </div>
                     }
 
-                    <div class="w-4 flex align-stretch">
+                    <div class="w-8 flex align-stretch">
                         <div class="card w-100 p-4 flex column justify-center gap-2">
                             <div class="badge primary card-title">
                                 Connected Pottery Item
                             </div>
+                            <div class="flex row nowrap justify-between align-center">
+                                <h5>Pottery Item #{{ prediction.pottery_item.id }}</h5>
+
+                                <a mat-button [routerLink]="['/admin/data', prediction.pottery_item.id]" class="border">
+                                View Item
+                            </a>
+                            </div>
                             <table class="vertical w-100">
-                                <tr>
-                                    <th colspan="2"><h5>Pottery Item #{{ prediction.pottery_item.id }}</h5></th>
-                                </tr>
+                                <!--<tr>
+                                    <th colspan="2"></th>
+                                </tr>-->
                                 @if (prediction.pottery_item.object_id) {
                                     <tr>
                                         <th>
@@ -176,9 +238,14 @@
                                             Chronology
                                         </th>
                                         <td>
-                                            {{ formatYear(prediction.pottery_item.chronology_label.start_year) }}
-                                            – {{ formatYear(prediction.pottery_item.chronology_label.end_year) }} <br>
-                                            {{ prediction.pottery_item.chronology_label.historical_period.name }} Period
+                                            <div class="flex row gap-2 gy-1 wrap">
+                                                <span>
+                                                    {{ formatYear(prediction.pottery_item.chronology_label.start_year) }}
+                                                    – {{ formatYear(prediction.pottery_item.chronology_label.end_year) }}
+                                                </span>
+                                                <span>//</span>
+                                                <span>{{ prediction.pottery_item.chronology_label.historical_period.name }} Period</span>
+                                            </div>
                                         </td>
                                     </tr>
                                 }
@@ -189,9 +256,7 @@
                                     </td>
                                 </tr>-->
                             </table>
-                            <a mat-button [routerLink]="['/admin/data', prediction.pottery_item.id]" class="border">
-                                View Pottery Item
-                            </a>
+
                         </div>
                     </div>
                 </div>
