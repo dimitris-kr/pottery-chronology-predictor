@@ -1,0 +1,61 @@
+name: Build & Deploy App to GitHub Pages
+
+# Build the Angular app on GitHub's servers and publish to GitHub Pages
+# on every push to main. No build output is committed to the repo.
+
+on:
+    push:
+        branches: [ main ]  # auto deploy on every push to main
+    workflow_dispatch:      # allow manual deploy from the Actions tab ("Run workflow" button)
+
+permissions:
+    contents: read    # read repo code
+    pages: write      # publish to GitHub Pages
+    id-token: write   # JWT to authenticate
+
+# Only one deploy at a time
+concurrency:
+    group: pages
+    cancel-in-progress: true   # cancel in-progress deploy on new push -> new deploy
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Clone repo onto runner
+                uses: actions/checkout@v4
+
+            -   name: Install Node v24 & cache npm downloads
+                uses: actions/setup-node@v4
+                with:
+                    node-version: 24
+                    cache: npm
+
+            -   name: Clean install dependencies   # from package-lock.json
+                run: npm ci
+
+            # Production build (default config) → uses environment.prod.ts (with HF Space URL).
+            # base-href = the repo name / URL path.
+            # <base href> in index.html gets OVERRIDDEN by build.
+            -   name: Build app
+                run: npm run build -- --base-href=/pottery-chronology-predictor/
+
+            # SPA deep-link fallback - routing fix - make direct access and refresh of children paths work
+            -   name: Copy index to 404
+                run: cp dist/PotteryChronologyPredictor/browser/index.html dist/PotteryChronologyPredictor/browser/404.html
+
+            -   name: Package build output as artifact
+                uses: actions/upload-pages-artifact@v3
+                with:
+                    path: dist/PotteryChronologyPredictor/browser
+
+    deploy:
+        needs: build
+        runs-on: ubuntu-latest
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+        steps:
+            -   id: deployment
+                name: Publish artifact to GitHub Pages
+                uses: actions/deploy-pages@v4
