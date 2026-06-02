@@ -224,7 +224,7 @@ export class PotteryItemsAll implements OnInit {
 
     resetPagination(): void {
         this.params.page.offset = 0;
-        this.paginator.pageIndex = 0;
+        if (this.paginator) this.paginator.pageIndex = 0;
     }
 
     onSortChange(sort: Sort): void {
@@ -249,8 +249,11 @@ export class PotteryItemsAll implements OnInit {
     activeFilterYearRange(): boolean {
         const values = this.filtersForm.value;
         return (
-            values.start_year != this.yearRange.min_start_year ||
-            values.end_year != this.yearRange.max_end_year
+            this.yearRange &&
+            (
+                values.start_year != this.yearRange.min_start_year ||
+                values.end_year != this.yearRange.max_end_year
+            )
         );
     }
 

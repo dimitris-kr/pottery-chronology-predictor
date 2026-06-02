@@ -40,36 +40,39 @@
                     </mat-form-field>
                 </div>
 
-                <div class="w-3">
-                    <mat-label>
-                        Year Range
-                        @if (activeFilterYearRange()) {
-                            : <small>
-                                {{ formatYear(filtersForm.value.start_year) }}
-                                - {{ formatYear(filtersForm.value.end_year) }}
-                            </small>
-                        }
-                    </mat-label>
-                    <mat-slider
-                        [min]="yearRange.min_start_year"
-                        [max]="yearRange.max_end_year"
-                        [step]="1"
-                        [discrete]="true"
-                        [displayWith]="formatYear"
-                        class="w-100"
-                    >
-                        <input
-                            matSliderStartThumb
-                            formControlName="start_year"
-                        />
-                        <input
-                            matSliderEndThumb
-                            formControlName="end_year"
-                        />
-                    </mat-slider>
+                @if (yearRange) {
+                    <div class="w-3">
+                        <mat-label>
+                            Year Range
+                            @if (activeFilterYearRange()) {
+                                : <small>
+                                    {{ formatYear(filtersForm.value.start_year) }}
+                                    - {{ formatYear(filtersForm.value.end_year) }}
+                                </small>
+                            }
+                        </mat-label>
+                        <mat-slider
+                            [min]="yearRange.min_start_year"
+                            [max]="yearRange.max_end_year"
+                            [step]="1"
+                            [discrete]="true"
+                            [displayWith]="formatYear"
+                            class="w-100"
+                        >
+                            <input
+                                matSliderStartThumb
+                                formControlName="start_year"
+                            />
+                            <input
+                                matSliderEndThumb
+                                formControlName="end_year"
+                            />
+                        </mat-slider>
 
 
-                </div>
+                    </div>
+                }
+
 
                 <div class="w-3">
                     <mat-form-field appearance="outline">
