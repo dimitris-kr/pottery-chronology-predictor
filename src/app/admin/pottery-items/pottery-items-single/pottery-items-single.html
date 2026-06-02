@@ -57,9 +57,10 @@
                                 <h5>Image</h5>
                                 @if (potteryItem.image_path) {
                                     <div class="image-container">
-                                        @if (imageUrl) {
+                                        @if (fullUrl || thumbUrl) {
                                             <img
-                                                [src]="imageUrl"
+                                                [src]="fullUrl ?? thumbUrl"
+                                                [class.blur-up]="!fullUrl"
                                                 loading="lazy"
                                                 alt="Pottery Image"
                                             >

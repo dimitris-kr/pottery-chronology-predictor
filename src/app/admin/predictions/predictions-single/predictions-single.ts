@@ -65,7 +65,10 @@ import {Breadcrumb} from '../../../core/services/breadcrumb';
 })
 export class PredictionsSingle {
     prediction?: Prediction;
-    imageUrl?: string;
+    // Blur Preview (LQIP): thumb appears instantly (usually already cached from the
+    // table view) shown blurred, then full replaces it.
+    thumbUrl?: string;
+    fullUrl?: string;
 
     @ViewChild('deleteDialog') deleteDialog!: TemplateRef<any>;
 
@@ -99,10 +102,21 @@ export class PredictionsSingle {
     private loadImage(p: Prediction) {
         if (!p.input_image_path) return;
 
-        this.imagesApi.getImage(p.input_image_path, 'full').subscribe(blob => {
-            this.imageUrl = URL.createObjectURL(blob);
+        // thumb: fast (likely cached) → shown blurred as placeholder
+        this.imagesApi.getImage(p.input_image_path, 'thumb').subscribe(blob => {
+            this.thumbUrl = URL.createObjectURL(blob);
             this.cdr.markForCheck();
         });
+        // full: replaces thumb when loaded
+        this.imagesApi.getImage(p.input_image_path, 'full').subscribe(blob => {
+            this.fullUrl = URL.createObjectURL(blob);
+            this.cdr.markForCheck();
+        });
+    }
+
+    ngOnDestroy() {
+        if (this.thumbUrl) URL.revokeObjectURL(this.thumbUrl);
+        if (this.fullUrl) URL.revokeObjectURL(this.fullUrl);
     }
 
     reloadPrediction() {

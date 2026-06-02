@@ -59,7 +59,10 @@ import {Breadcrumb} from '../../../core/services/breadcrumb';
 })
 export class PotteryItemsSingle {
     potteryItem?: PotteryItem;
-    imageUrl?: string;
+    // Blur Preview (LQIP): thumb appears instantly (usually already cached from the
+    // table view) shown blurred, then full replaces it.
+    thumbUrl?: string;
+    fullUrl?: string;
 
     connectedPredictions = {
         data: new MatTableDataSource<Prediction>([]),
@@ -123,8 +126,14 @@ export class PotteryItemsSingle {
     private loadImage(pi: PotteryItem) {
         if (!pi.image_path) return;
 
+        // thumb: fast (likely cached) → shown blurred as placeholder
+        this.imagesApi.getImage(pi.image_path, 'thumb').subscribe(blob => {
+            this.thumbUrl = URL.createObjectURL(blob);
+            this.cdr.markForCheck();
+        });
+        // full: replaces thumb when loaded
         this.imagesApi.getImage(pi.image_path, 'full').subscribe(blob => {
-            this.imageUrl = URL.createObjectURL(blob);
+            this.fullUrl = URL.createObjectURL(blob);
             this.cdr.markForCheck();
         });
     }
@@ -178,7 +187,8 @@ export class PotteryItemsSingle {
     }
 
     ngOnDestroy() {
-        if (this.imageUrl) URL.revokeObjectURL(this.imageUrl);
+        if (this.thumbUrl) URL.revokeObjectURL(this.thumbUrl);
+        if (this.fullUrl) URL.revokeObjectURL(this.fullUrl);
         for (const url of this.connectedPredictions.images.values()) {
             URL.revokeObjectURL(url);
         }

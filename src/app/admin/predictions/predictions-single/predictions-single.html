@@ -74,8 +74,12 @@
                                         <span class="label">Image</span>
 
                                         @if (prediction.input_image_path) {
-                                            @if (imageUrl) {
-                                                <img [src]="imageUrl" loading="lazy" alt="Pottery Image"/>
+                                            @if (fullUrl || thumbUrl) {
+                                                <img
+                                                    [src]="fullUrl ?? thumbUrl"
+                                                    [class.blur-up]="!fullUrl"
+                                                    loading="lazy"
+                                                    alt="Pottery Image"/>
                                             } @else {
                                                 <div class="placeholder">
                                                     <mat-spinner diameter="25"></mat-spinner>
