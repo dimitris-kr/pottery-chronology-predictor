@@ -253,6 +253,7 @@ h6 {
 }
 
 p {
+    font-size: 15px;
     margin: 0 0 10px;
 }
 
@@ -267,6 +268,7 @@ strong {
 img {
     max-width: 100%;
 }
+
 // ICONS
 
 mat-icon {
@@ -383,7 +385,7 @@ mat-icon {
     }
 }
 
-    // FORM
+// FORM
 .mat-mdc-form-field {
     width: 100%;
 }
@@ -489,6 +491,7 @@ table {
             font-weight: 400 !important;
             color: var(--text-color-body);
         }
+
         td {
             font-weight: 500;
             color: var(--text-color-primary);
@@ -712,7 +715,7 @@ html {
     }
 
     .upload-icon {
-        color:var(--beige-10);
+        color: var(--beige-10);
     }
 
     img {
@@ -751,7 +754,7 @@ html {
         font-weight: 500;
         letter-spacing: var(--mat-form-field-outlined-label-text-tracking, var(--mat-sys-body-large-tracking));
         background-color: var(--beige-100);
-        padding: 0 5px ;
+        padding: 0 5px;
         display: block;
         position: absolute;
         top: -10px;
@@ -787,3 +790,49 @@ html {
         }
     }
 }
+
+// MESSAGE
+.message {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    //border-width: 1.5px;
+    //border-style: solid;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    gap: 10px;
+    font-weight: 500;
+    font-size: 15px;
+
+    .mat-icon {
+        --icon-size: 22px;
+        width: var(--icon-size);
+        min-width: var(--icon-size);
+        height: var(--icon-size);
+        font-size: var(--icon-size);
+        line-height: var(--icon-size);
+    }
+
+    &.success {
+        background-color: color-mix(in oklab, var(--success) 25%, white);
+        color: color-mix(in oklab, var(--success) 75%, black);
+
+    }
+
+    &.warning {
+        background-color: color-mix(in oklab, var(--warning) 25%, white);
+        color: color-mix(in oklab, var(--warning) 75%, black);
+
+    }
+}
+
+// MAT DIALOG
+
+.mat-mdc-dialog-container {
+    .mat-mdc-dialog-title,
+    .mat-mdc-dialog-content,
+    .mat-mdc-dialog-actions {
+        padding: 20px 30px !important;
+    }
+}
+

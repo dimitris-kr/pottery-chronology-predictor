@@ -21,6 +21,7 @@ import {MatTooltip} from '@angular/material/tooltip';
 import {capitalize, getScoreColor, scoreColumn, scoreColumnLabel, taskExplanation} from '../../../core/utils/helpers';
 import {DatePipe, DecimalPipe, NgStyle, PercentPipe} from '@angular/common';
 import {RouterLink} from '@angular/router';
+import {ModelsRetrain} from '../models-retrain/models-retrain';
 
 @Component({
     selector: 'app-models-all',
@@ -45,7 +46,8 @@ import {RouterLink} from '@angular/router';
         PercentPipe,
         DecimalPipe,
         NgStyle,
-        RouterLink
+        RouterLink,
+        ModelsRetrain,
     ],
     templateUrl: './models-all.html',
     styleUrl: './models-all.scss',

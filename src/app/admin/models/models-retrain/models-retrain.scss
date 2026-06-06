@@ -1,0 +1,26 @@
+.retrain-panel {
+    &.eligible {
+        background-color: var(--orange-90);
+        .display {
+            color: var(--orange-00);
+        }
+    }
+
+    &.disabled {
+        background-color: var(--black-05);
+
+        * {
+            opacity: 0.9;
+        }
+    }
+
+}
+
+.new-item-count {
+    min-width: 80px;
+    .display {
+        line-height: 1em;
+    }
+}
+
+

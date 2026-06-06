@@ -29,7 +29,13 @@
                     class="w-100 nav-link"
                 >
                     <mat-icon>{{ menuItem.icon }}</mat-icon>
-                    <span>{{ menuItem.label }}</span>
+                    <span
+                        [matBadge]="menuItem.badgeCount && menuItem.badgeCount() > 0 ? menuItem.badgeCount() : null"
+                        matBadgeOverlap="false"
+                        matBadgeSize="large"
+                    >
+                        {{ menuItem.label }}
+                    </span>
                 </a>
             }
         </nav>

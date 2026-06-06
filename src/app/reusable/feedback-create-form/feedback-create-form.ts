@@ -12,6 +12,7 @@ import {ApiPredictions} from '../../core/services/api-predictions';
 import {PotteryItemCreateFromPredictionRequest} from '../../core/models/pottery-item';
 import {toSignedYear} from '../../core/utils/helpers';
 import {Alert} from '../../core/services/alert';
+import {RetrainEligibility} from '../../core/services/retrain-eligibility';
 import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {MatButton} from '@angular/material/button';
@@ -47,6 +48,7 @@ export class FeedbackCreateForm {
         private fb: FormBuilder,
         private predictionsApi: ApiPredictions,
         private alert: Alert,
+        private retrainEligibility: RetrainEligibility,
         protected ffError: FormFieldError,
     ) {
         this.form = this.fb.group(
@@ -112,6 +114,9 @@ export class FeedbackCreateForm {
             .subscribe({
                 next: () => {
                     this.alert.success("Feedback Submitted Successfully! New pottery item created.");
+                    // A new labeled item bumps the retrain eligibility count →
+                    // keep the sidebar badge and retrain panel in sync everywhere.
+                    this.retrainEligibility.refresh();
                     this.created.emit();
                 },
             });
