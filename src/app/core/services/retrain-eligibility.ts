@@ -36,4 +36,17 @@ export class RetrainEligibility {
             },
         });
     }
+
+    /**
+     * Optimistically mark all new items as consumed after a successful retrain —
+     * Applied immediately to avoid a flash of stale count until refresh confirms from backend
+     */
+    markRetrained(): void {
+        const prev = this._eligibility();
+        this._eligibility.set({
+            eligible: false,
+            new_items_count: 0,
+            recommended_threshold: prev?.recommended_threshold ?? 0,
+        });
+    }
 }

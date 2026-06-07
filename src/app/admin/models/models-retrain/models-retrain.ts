@@ -16,7 +16,7 @@ type UIState = 'idle' | 'triggering' | 'running' | 'finalizing' | 'done';
 
 // Polling Modal job status config
 const POLL_INTERVAL_MS = 4000;
-const MAX_NOT_FOUND_POLLS = 3;
+const MAX_NOT_FOUND_POLLS = 5;
 
 // Polling webhook → DB Finalization status config
 // quick -> poll faster but cap the wait.
@@ -152,6 +152,7 @@ export class ModelsRetrain {
     }
 
     private handleStatus(jobStatus: JobStatus) {
+        console.log(`>> modal job status: ${jobStatus.status}`);
         if (jobStatus.status === 'running') return;
         if (jobStatus.status === 'not_found' && this.notFoundCount <= MAX_NOT_FOUND_POLLS) return;
 
@@ -207,6 +208,8 @@ export class ModelsRetrain {
     }
 
     private handleRunStatus(runStatus: RunStatus) {
+        console.log(`>> finalize status: ${runStatus.status}`);
+
         // Keep waiting while still finalizing and under the cap.
         if (runStatus.status === 'finalizing' && this.finalizeAttempts < MAX_FINALIZE_POLLS) return;
 
@@ -215,12 +218,16 @@ export class ModelsRetrain {
         const v = this.newVersion ?? 'New version of';
 
         if (runStatus.status === 'finalized') {
+            // Set eligibility optimistically first (no stale-count), until refresh confirms from backend.
+            this.eligibility.markRetrained();
+            this.eligibility.refresh();
+
             this.uiState = 'done';
             this.alert.success(`Retraining finished! ${v} models now live.`);
-            // Count drops → update eligibility
-            this.eligibility.refresh();
+
             // reload the model version tables
             this.retrained.emit();
+
             return;
         }
 
