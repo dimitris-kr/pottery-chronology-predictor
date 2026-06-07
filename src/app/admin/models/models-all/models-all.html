@@ -5,7 +5,7 @@
             predictions.</p>
     </div>
 
-    <app-models-retrain></app-models-retrain>
+    <app-models-retrain (retrained)="onRetrained()"></app-models-retrain>
 
     @for (table of modelsTables; track table.task.id) {
         <div class="flex column gap-3">

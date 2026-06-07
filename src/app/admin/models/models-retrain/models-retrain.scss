@@ -7,11 +7,7 @@
     }
 
     &.disabled {
-        background-color: var(--black-05);
-
-        * {
-            opacity: 0.9;
-        }
+        background-color: var(--beige-60);
     }
 
 }
@@ -23,4 +19,10 @@
     }
 }
 
+.highlight {
+    color: var(--orange-00);
+}
 
+.current-task {
+    font-style: italic;
+}

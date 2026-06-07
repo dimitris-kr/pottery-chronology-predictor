@@ -33,7 +33,6 @@ export class RetrainEligibility {
         ).subscribe({
             next: eligibility => {
                 this._eligibility.set(eligibility);
-                // this._eligibility.set({eligible: false, new_items_count: 0, recommended_threshold: 86});
             },
         });
     }

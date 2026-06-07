@@ -116,6 +116,14 @@ export class ModelsAll implements OnInit {
         table.params.page.offset = 0;
     }
 
+    onRetrained() {
+        // New ModelVersions were promoted to is_current — refresh every per-task table.
+        this.modelsTables.forEach(table => {
+            this.resetPagination(table);
+            this.loadPage(table);
+        });
+    }
+
     onSortChange(table: ModelsTable, sort: Sort) {
         if (!sort.direction) return;
 

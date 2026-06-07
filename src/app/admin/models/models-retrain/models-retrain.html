@@ -1,14 +1,60 @@
 <div class="flex column gap-3">
+    @if (uiState === 'done') {
+        <div class="message success large">
+            <span>
+                <mat-icon>done_all</mat-icon>
+            </span>
+            <span>
+                <h5>Retrain finished successfully!</h5>
+                <p class="m-0">
+                    A new version
+                    @if (newVersion) {
+                        (<strong>{{ newVersion }}</strong>)
+                    }
+                    of each model has been trained with all data, including the new items;
+                    {{ newVersion ?? 'The new versions of' }} models are now live on the app and will be used on next predictions.
+                </p>
+            </span>
+        </div>
+    }
     <div class="card px-4 py-3 flex row wrap gy-4 align-center justify-between retrain-panel"
-         [ngClass]="eligibility.eligible() ? 'eligible' : 'disabled'">
-        <div class="w-8">
-            @if (uiState === 'running') {
+         [ngClass]="eligibility.eligible() || busy ? 'eligible' : 'disabled'">
+        <div class="w-8 flex row gap-4 align-start justify-start">
+            @if (busy) {
+                <div class="flex column align-center justify-center spinner-container">
+                    <mat-spinner diameter="40"></mat-spinner>
+                </div>
+                <div class="flex column align-start justify-center gap-1">
+                    <h5 class="m-0 highlight">
+                        Retrain in progress
+                    </h5>
+                    <p class="m-0 current-task">
+                        @if (uiState === 'triggering') {
+                            Preparing data for training
+                        } @else if (uiState === 'running') {
+                            Training new version
+                            @if (newVersion) {
+                                (<strong>{{ newVersion }}</strong>)
+                            }
+                            of each model on the cloud (this should take ~2–3 minutes)
+                        } @else if (uiState === 'finalizing') {
+                            Finalizing
+                            @if (newVersion) {
+                                <strong>{{ newVersion }}</strong>
+                            } @else {
+                                new version of
+                            }
+                            models and publishing to model registry
+                        }
+                        ...
+                    </p>
+                </div>
 
             } @else {
-                <div class="flex row gap-5 align-start justify-start">
-                    @if (eligibility.loading() && !eligibility.eligibility()) {
-                        <p>Checking retrain eligibility…</p>
-                    } @else {
+                @if (eligibility.loading() && !eligibility.eligibility()) {
+                    <p>Checking retrain eligibility…</p>
+                } @else {
+                    @if (eligibility.eligible()) {
                         <div class="flex column align-center justify-center gap-1 text-center new-item-count">
                             <span class="display m-0">
                                 {{ eligibility.newItemsCount() }}
@@ -17,40 +63,38 @@
                                 New Items
                             </h6>
                         </div>
-                        <div class="flex column align-start justify-center gap-1">
-                            <div class="flex row gap-2 justify-start align-center">
-                                <h5 class="m-0">
-                                    @if (eligibility.eligible()) {
-                                        Use new data to retrain the models!
-                                    } @else {
-                                        Models are up to date, no need to retrain.
-                                    }
-                                </h5>
-
-                                <button
-                                    matIconButton
-                                    aria-label="help"
-                                    matTooltip="Run the retraining process when there are newly validated pottery items, to help the models make better predictions."
-                                    matTooltipPosition="after"
-                                    class="btn-sm"
-                                >
-                                    <mat-icon>help</mat-icon>
-                                </button>
-                            </div>
-
-
-                            <p class="m-0">
-                                There are
-                                {{ eligibility.newItemsCount() > 0 ? eligibility.newItemsCount() : 'no' }}
-                                new pottery item{{ eligibility.newItemsCount() === 1 ? '' : 's' }}
-                                with validated chronology that haven't been used for training the models yet.
-                            </p>
-
-
-                        </div>
                     }
-                </div>
 
+                    <div class="flex column align-start justify-center gap-1">
+                        <div class="flex row gap-2 justify-start align-center">
+                            <h5 class="m-0">
+                                @if (eligibility.eligible()) {
+                                    Use new data to retrain the models!
+                                } @else {
+                                    Models are up to date, no need to retrain.
+                                }
+                            </h5>
+
+                            <button
+                                matIconButton
+                                aria-label="help"
+                                matTooltip="Run the retraining process when there are newly validated pottery items, to help the models make better predictions."
+                                matTooltipPosition="after"
+                                class="btn-sm"
+                            >
+                                <mat-icon>help</mat-icon>
+                            </button>
+                        </div>
+
+
+                        <p class="m-0">
+                            There are
+                            {{ eligibility.newItemsCount() > 0 ? eligibility.newItemsCount() : 'no' }}
+                            new pottery item{{ eligibility.newItemsCount() === 1 ? '' : 's' }}
+                            with validated chronology that haven't been used for training the models yet.
+                        </p>
+                    </div>
+                }
             }
         </div>
         <div class="w-4">
@@ -58,17 +102,22 @@
                 mat-flat-button
                 color="primary"
                 (click)="openConfirm()"
-                [disabled]="uiState === 'running' || eligibility.loading() || !eligibility.eligible()"
+                [disabled]="busy || eligibility.loading() || !eligibility.eligible()"
                 class="w-100"
             >
                 <mat-icon>autorenew</mat-icon>
-                {{ uiState === 'running' ? 'Training…' : 'Retrain Models' }}
+                @if (uiState === 'triggering') {
+                    Preparing...
+                } @else if (uiState === 'running') {
+                    Training...
+                } @else if (uiState === 'finalizing') {
+                    Finalizing...
+                } @else {
+                    Retrain Models
+                }
             </button>
         </div>
     </div>
-    @if (uiState === 'idle' && !eligibility.loading() && eligibility.eligible()) {
-
-    }
 </div>
 
 <ng-template #confirmDialog>
@@ -81,7 +130,7 @@
                 item{{ eligibility.newItemsCount() === 1 ? '' : 's' }}</strong>.
                 The whole process should last around 2–3 minutes.
             </p>
-            <div class="message" [ngClass]="belowThreshold() ? 'warning' : 'success'">
+            <div class="message small" [ngClass]="belowThreshold() ? 'warning' : 'success'">
                 @if (belowThreshold()) {
                     <mat-icon>warning</mat-icon>
                     <span>
@@ -92,7 +141,7 @@
                 } @else {
                     <mat-icon>check</mat-icon>
                     <span>
-                        The amount of new items satisfies the recommended minimum for the next retrain.
+                        The number of new items satisfies the recommended minimum for the next retrain.
                     </span>
                 }
 
@@ -102,7 +151,10 @@
     </mat-dialog-content>
     <mat-dialog-actions>
         <button mat-button mat-dialog-close>Cancel</button>
-        <button matButton="filled" color="primary">
+        <button
+            matButton="filled"
+            color="primary"
+            (click)="confirmRetrain()">
             <mat-icon>autorenew</mat-icon>
             Start Retraining
         </button>

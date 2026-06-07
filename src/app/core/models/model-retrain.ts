@@ -29,3 +29,9 @@ export interface JobStatus {
     error: string | null;
     result: unknown | null;
 }
+
+export type RunStatusValue = 'finalizing' | 'finalized' | 'failed' | 'archived';
+
+export interface RunStatus {
+    status: RunStatusValue;
+}

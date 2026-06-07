@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 import {getApiUrl} from '../utils/request';
 import {parseBackendDate} from '../utils/dates';
-import {Eligibility, JobStatus, RetrainStarted, TrainingRun} from '../models/model-retrain';
+import {Eligibility, JobStatus, RetrainStarted, TrainingRun, RunStatus} from '../models/model-retrain';
 
 @Injectable({
     providedIn: 'root',
@@ -31,6 +31,10 @@ export class ApiModelsRetrain {
 
     getStatus(jobId: string): Observable<JobStatus> {
         return this.http.get<JobStatus>(`${this.url}/status/${jobId}`);
+    }
+
+    getRunStatus(trainingRunId: number): Observable<RunStatus> {
+        return this.http.get<RunStatus>(`${this.url}/run-status/${trainingRunId}`);
     }
 
     private normalize(raw: any): TrainingRun {
