@@ -2,6 +2,7 @@ import {ChangeDetectorRef, Component, TemplateRef, ViewChild} from '@angular/cor
 import {isClassification, Prediction} from '../../../core/models/prediction';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {ApiPredictions} from '../../../core/services/api-predictions';
+import {PendingPredictions} from '../../../core/services/pending-predictions';
 import {filter, finalize, map, switchMap} from 'rxjs';
 import {DatePipe, DecimalPipe, NgClass, NgStyle, PercentPipe} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
@@ -75,6 +76,7 @@ export class PredictionsSingle {
     constructor(
         private route: ActivatedRoute,
         private predictionsApi: ApiPredictions,
+        private pendingPredictions: PendingPredictions,
         private imagesApi: ApiImages,
         private alert: Alert,
         private router: Router,
@@ -145,6 +147,8 @@ export class PredictionsSingle {
 
     delete(){
         if (!this.prediction) return;
+        // Capture before delete — only a pending prediction affects the count.
+        const wasPending = this.prediction.status === 'pending';
         this.predictionsApi.delete(this.prediction.id).pipe(
             finalize(() => {
                 this.dialogService.closeAll();
@@ -153,6 +157,9 @@ export class PredictionsSingle {
             next: () => {
                 this.dialogService.closeAll();
                 this.alert.success("Prediction deleted successfully");
+                if (wasPending) {
+                    this.pendingPredictions.refresh();
+                }
                 this.router.navigate(['/admin/predictions']);
             }
         });

@@ -787,6 +787,9 @@ html {
 
         &.true-pending {
             color: var(--black-30);
+            + span {
+                color: var(--black-30);
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, ViewChild} from '@angular/core';
 import {
     MatCell,
     MatCellDef,
@@ -11,6 +11,7 @@ import {
 import {Prediction, PredictionFilters, PredictionSortBy} from '../../../core/models/prediction';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {ApiPredictions} from '../../../core/services/api-predictions';
+import {PendingPredictions} from '../../../core/services/pending-predictions';
 import {MatIcon} from '@angular/material/icon';
 import {DatePipe, NgClass} from '@angular/common';
 import {MatButton, MatIconButton} from '@angular/material/button';
@@ -101,6 +102,9 @@ export class PredictionsAll implements OnInit {
 
     filtersForm: FormGroup;
 
+    /** Shared pending predictions count - same source the sidebar badge reads from. */
+    protected readonly pending = inject(PendingPredictions);
+
     @ViewChild(MatPaginator) paginator!: MatPaginator;
 
     constructor(
@@ -119,6 +123,8 @@ export class PredictionsAll implements OnInit {
 
     ngOnInit(): void {
         this.loadPage();
+
+        this.pending.refresh();
 
         this.filtersForm.valueChanges
             .pipe(debounceTime(300))
@@ -178,6 +184,15 @@ export class PredictionsAll implements OnInit {
         this.paginator.pageIndex = 0;
     }
 
+    /** Apply filter for predictions with feedback status = pending. */
+    viewPending(): void {
+        this.filtersForm.patchValue({status: 'pending'});
+    }
+
+    resetPending(): void {
+        this.filtersForm.patchValue({status: undefined});
+    }
+
     clearFilters(): void {
         this.filtersForm.reset({
             input_type: undefined,
@@ -185,6 +200,10 @@ export class PredictionsAll implements OnInit {
             status: undefined,
             match: undefined,
         });
+    }
+
+    activePendingStatusFilter(): boolean {
+        return this.filtersForm.value.status === 'pending';
     }
 
     activeFiltersCount(): number {

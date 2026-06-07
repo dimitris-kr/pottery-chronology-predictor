@@ -17,12 +17,12 @@
     .display {
         line-height: 1em;
     }
+
+    h6 {
+        font-size: 12px;
+    }
 }
 
 .highlight {
     color: var(--orange-00);
-}
-
-.current-task {
-    font-style: italic;
 }

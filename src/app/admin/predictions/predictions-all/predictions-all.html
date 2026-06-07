@@ -4,12 +4,73 @@
         <p>Here you can find all past predictions made on the app.</p>
     </div>
 
+    @if (pending.count() > 0) {
+        <div class="card px-4 py-3 flex row wrap gy-4 align-center justify-between pending-panel">
+            <div class="w-9 flex row gap-4 align-start justify-start">
+                <div class="flex column align-center justify-center text-center pending-count">
+                    <span class="display m-0">{{ pending.count() }}</span>
+                    <h6 class="m-0">Prediction{{ pending.count() === 1 ? '' : 's' }} Pending Feedback</h6>
+                </div>
+                <div class="flex column align-start justify-center gap-1">
+                    <div class="flex row gap-2 justify-start align-center">
+                        <h5 class="m-0">
+                            Validate predicted chronologies
+                        </h5>
+
+                        <button
+                            matIconButton
+                            aria-label="help"
+                            matTooltip="New validated items enable retraining models with wider knowledge base, and helps them make better predictions"
+                            matTooltipPosition="after"
+                            class="btn-sm"
+                        >
+                            <mat-icon>help</mat-icon>
+                        </button>
+                    </div>
+                    <p class="m-0">
+                        There
+                        {{ pending.count() === 1 ? 'is' : 'are' }}
+                        {{ pending.count() }}
+                        prediction{{ pending.count() === 1 ? '' : 's' }}
+                        still pending expert feedback. Give feedback by either connecting prediction to an already
+                        validated pottery item or insert your chronology feedback and create new validated pottery item.
+                    </p>
+                </div>
+            </div>
+            <div class="w-3">
+
+                @if (activePendingStatusFilter()) {
+                    <button
+                        mat-button
+                        type="button"
+                        (click)="resetPending()"
+                        class="w-100 border"
+                    >
+                        Reset Pending Filter
+                    </button>
+                } @else {
+                    <button
+                        mat-flat-button
+                        color="primary"
+                        (click)="viewPending()"
+                        [disabled]="activePendingStatusFilter()"
+                        class="w-100"
+                    >
+                        <mat-icon>pending</mat-icon>
+                        Filter Pending
+                    </button>
+                }
+            </div>
+        </div>
+    }
+
     <div class="card">
         <mat-expansion-panel>
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <div class="py-1">
-                        <h6 [matBadge]="activeFiltersCount()" [matBadgeHidden]="!activeFilters()" matBadgeOverlap="false" class="m-0">
+                        <h6 [matBadge]="activeFiltersCount()" [matBadgeHidden]="!activeFilters()"
+                            matBadgeOverlap="false" class="m-0">
                             Filters
                         </h6>
                     </div>
@@ -166,9 +227,9 @@
                 <th mat-header-cell *matHeaderCellDef>Feedback</th>
                 <td mat-cell *matCellDef="let p">
                     <div class="flex row nowrap justify-start align-start gap-1 chronology">
-                    @if (p.pottery_item && p.pottery_item.chronology_label) {
-                        <mat-icon class="true-verified">check_circle</mat-icon>
-                        <span>
+                        @if (p.pottery_item && p.pottery_item.chronology_label) {
+                            <mat-icon class="true-verified">check_circle</mat-icon>
+                            <span>
                             @if (p.historical_period) {
                                 {{ p.pottery_item.chronology_label.historical_period.name }}
                             } @else if (p.start_year && p.end_year) {
@@ -176,9 +237,10 @@
                             }
                         </span>
 
-                    } @else {
-                        <mat-icon class="true-pending">pending</mat-icon>
-                    }
+                        } @else {
+                            <mat-icon class="true-pending">pending</mat-icon>
+                            <span class="italic">pending</span>
+                        }
                     </div>
                 </td>
             </ng-container>
@@ -206,7 +268,8 @@
                 <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let p">
                     <button mat-icon-button
-                            matTooltip="View Prediction Details" matTooltipPosition="above" matTooltipShowDelay="300" class="btn-sm border">
+                            matTooltip="View Prediction Details" matTooltipPosition="above" matTooltipShowDelay="300"
+                            class="btn-sm border">
                         <mat-icon>arrow_forward</mat-icon>
                     </button>
                 </td>

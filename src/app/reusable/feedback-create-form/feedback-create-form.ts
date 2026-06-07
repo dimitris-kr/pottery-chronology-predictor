@@ -13,6 +13,7 @@ import {PotteryItemCreateFromPredictionRequest} from '../../core/models/pottery-
 import {toSignedYear} from '../../core/utils/helpers';
 import {Alert} from '../../core/services/alert';
 import {RetrainEligibility} from '../../core/services/retrain-eligibility';
+import {PendingPredictions} from '../../core/services/pending-predictions';
 import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {MatButton} from '@angular/material/button';
@@ -49,6 +50,7 @@ export class FeedbackCreateForm {
         private predictionsApi: ApiPredictions,
         private alert: Alert,
         private retrainEligibility: RetrainEligibility,
+        private pendingPredictions: PendingPredictions,
         protected ffError: FormFieldError,
     ) {
         this.form = this.fb.group(
@@ -117,6 +119,8 @@ export class FeedbackCreateForm {
                     // A new labeled item bumps the retrain eligibility count →
                     // keep the sidebar badge and retrain panel in sync everywhere.
                     this.retrainEligibility.refresh();
+                    // The prediction is now validated → drop the pending count.
+                    this.pendingPredictions.refresh();
                     this.created.emit();
                 },
             });

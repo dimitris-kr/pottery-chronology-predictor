@@ -6,6 +6,7 @@ import {MatBadge} from '@angular/material/badge';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {MenuItem} from '../../core/utils/menu-item';
 import {RetrainEligibility} from '../../core/services/retrain-eligibility';
+import {PendingPredictions} from '../../core/services/pending-predictions';
 
 @Component({
   selector: 'app-sidebar',
@@ -22,9 +23,11 @@ import {RetrainEligibility} from '../../core/services/retrain-eligibility';
 })
 export class Sidebar implements OnInit {
     private readonly retrainEligibility = inject(RetrainEligibility);
+    private readonly pendingPredictions = inject(PendingPredictions);
 
     ngOnInit() {
         this.retrainEligibility.refresh();
+        this.pendingPredictions.refresh();
     }
 
     mainMenuItems = [
@@ -48,6 +51,7 @@ export class Sidebar implements OnInit {
             "Predictions",
             "auto_awesome",
             "/predictions",
+            this.pendingPredictions.count,
         )
     ];
 

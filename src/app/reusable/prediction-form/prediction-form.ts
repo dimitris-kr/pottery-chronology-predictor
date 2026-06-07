@@ -8,6 +8,7 @@ import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-to
 import {AsyncPipe, JsonPipe} from '@angular/common';
 import {Loader} from '../../core/services/loader';
 import {ApiPredictions} from '../../core/services/api-predictions';
+import {PendingPredictions} from '../../core/services/pending-predictions';
 import {Router} from '@angular/router';
 import {Alert} from '../../core/services/alert';
 
@@ -39,6 +40,7 @@ export class PredictionForm {
         private formBuilder: FormBuilder,
         protected loader: Loader,
         private predictionsApi: ApiPredictions,
+        private pendingPredictions: PendingPredictions,
         private alert: Alert,
         private router: Router,
         private cdr: ChangeDetectorRef
@@ -123,6 +125,8 @@ export class PredictionForm {
         this.predictionsApi.create(formData).subscribe({
             next: prediction => {
                 this.alert.success("Prediction created successfully!");
+                // New prediction starts as 'pending' → keep the badge/panel count in sync.
+                this.pendingPredictions.refresh();
                 this.router.navigate(['/admin/predictions', prediction.id]);
             }
         });

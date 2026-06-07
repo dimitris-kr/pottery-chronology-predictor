@@ -15,3 +15,16 @@
 .mat-column-feedback {
     min-width: 160px;
 }
+
+.pending-panel {
+    background-color: var(--orange-90);
+    .display {
+        color: var(--orange-00);
+    }
+    .pending-count {
+        min-width: 120px;
+        h6 {
+            font-size: 12px;
+        }
+    }
+}

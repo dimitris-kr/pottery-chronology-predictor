@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {
-    ClassificationPrediction,
+    ClassificationPrediction, PendingPredictionCount,
     Prediction,
     PredictionFilters,
     PredictionSortBy,
@@ -74,6 +74,10 @@ export class ApiPredictions {
 
     delete(id: number): Observable<void> {
         return this.http.delete<void>(`${this.url}/${id}`);
+    }
+
+    getPendingPredictionCount(): Observable<PendingPredictionCount> {
+        return this.http.get<PendingPredictionCount>(`${this.url}/pending`);
     }
 
     private normalizePrediction(raw: any): Prediction {

@@ -6,6 +6,7 @@ import {
 } from 'rxjs';
 import {PotteryItem, PotteryItemBase} from '../../core/models/pottery-item';
 import {ApiPredictions} from '../../core/services/api-predictions';
+import {PendingPredictions} from '../../core/services/pending-predictions';
 import {ApiPotteryItems} from '../../core/services/api-pottery-items';
 import {MatError, MatFormField, MatHint, MatInput, MatLabel} from '@angular/material/input';
 import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
@@ -54,6 +55,7 @@ export class FeedbackConnectForm {
     constructor(
         private fb: FormBuilder,
         private predictionsApi: ApiPredictions,
+        private pendingPredictions: PendingPredictions,
         private potteryItemsApi: ApiPotteryItems,
         protected loader: Loader,
         private alert: Alert,
@@ -126,6 +128,8 @@ export class FeedbackConnectForm {
             .subscribe({
                 next: () => {
                     this.alert.success("Feedback Submitted Successfully! Prediction connected to existing pottery item.");
+                    // Prediction is now validated → drop the pending count
+                    this.pendingPredictions.refresh();
                     this.connected.emit();
                 },
             });

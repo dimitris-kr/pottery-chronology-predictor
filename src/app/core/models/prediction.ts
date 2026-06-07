@@ -80,6 +80,12 @@ export function isClassification(
 }
 
 
+/** Count of predictions awaiting expert feedback (status === 'pending'). */
+export interface PendingPredictionCount {
+    count: number;
+}
+
+
 export interface PredictionFilters {
     input_type?: PredictionInputType;
     output_type?: PredictionOutputType;
