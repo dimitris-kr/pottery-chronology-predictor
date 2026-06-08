@@ -1,0 +1,42 @@
+<div class="w-100 ">
+    <div class="card p-4 flex column gap-6 footer">
+        <div class="flex row wrap gy-3 justify-between align-stretch logo-container">
+            <div class="w-3">
+                <img ngSrc="assets/logo.png" alt="logo" height="240" width="591" class="logo">
+            </div>
+
+            <div class="w-9 flex row wrap justify-between align-center gy-1">
+                <p class="m-0">AI Powered Web Application for the Chronology Prediction of Pottery Data</p>
+                <p class="m-0">MSc Thesis Project</p>
+            </div>
+
+            <div class="w-3">
+
+            </div>
+        </div>
+        <div class="flex column gap-2">
+            <h6>Research Context</h6>
+            <div class="flex row wrap gy-3 justify-between align-center">
+                <div class="w-8">
+                    <p class="m-0">
+                        The system has been developed by Dimitris Krikonis as part of the MSc thesis for the Data
+                        Science & Information Technologies program at the Department of Informatics and
+                        Telecommunications, National and Kapodistrian University of Athens, in collaboration with the
+                        American School of Classical Studies at Athens with data from the Ancient Agora of Athens.
+                    </p>
+                </div>
+                <div class="w-4 flex row wrap justify-between align-center gx-1 gy-2">
+                    @for (org of orgs; track org) {
+                        <a [href]="org.link" target="_blank" class="org-logo">
+                            <img
+                                [src]="org.logo"
+                                loading="lazy"
+                                alt="org logo"/>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

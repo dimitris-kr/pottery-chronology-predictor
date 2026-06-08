@@ -1,0 +1,30 @@
+
+.about {
+    .display {
+        font-size: 32px;
+    }
+
+    .input-data {
+        .mdc-text-field__input {
+            color: var(--text-color-body);
+        }
+        mat-label {
+            color: var(--text-color-secondary);
+        }
+        .mat-mdc-form-field-subscript-wrapper {
+            display: none !important;
+        }
+
+        .mat-mdc-form-field {
+            flex-direction: column-reverse;
+        }
+    }
+
+    .card.chronology {
+        min-height: 65px;
+
+        &.true {
+            //border: 2px solid var(--beige-50);
+        }
+    }
+}

@@ -1,13 +1,171 @@
-<div class="inner">
-    <div class="floating">
-        <h1>
-            Pottery Chronology Predictor
-        </h1>
-        <h5 style="color: var(--text-color-secondary)">
-            A decision-support tool for archaeologists to estimate the historical period or exact date range of pottery, based on textual descriptions and images.
-        </h5>
-        <p>
-            By combining machine learning models with expert feedback, the platform provides fast, data-driven predictions while continuously improving through real archaeological input.
-        </p>
+<div class="inner about ">
+
+
+    <div class="flex column gy-6">
+        <div class="floating">
+            <h1>
+                Pottery Chronology Predictor
+            </h1>
+            <h5 style="color: var(--text-color-secondary)">
+                A decision-support tool for archaeologists to estimate the historical period or exact date range of pottery,
+                based on textual descriptions and images.
+            </h5>
+            <p>
+                By combining machine learning models with expert feedback, the platform provides fast, data-driven
+                predictions while continuously improving through real archaeological input.
+            </p>
+        </div>
+
+        <div class="flex row wrap justify-between align-stretch gy-4">
+            <div class="w-100 px-2 flex column gy-2">
+                <h3 class="m-0">
+                    How Predictions Work
+                </h3>
+            </div>
+
+            <div class="w-100 ">
+                <div class="flex row wrap justify-between align-stretch gy-4">
+                    <div class="w-6 flex column gap-3">
+
+                        <div class="card p-4 flex row wrap justify-between align-end gy-2 input-data">
+                            <div class="badge primary card-title">
+                                <span>Input Data</span>
+                            </div>
+                            <!-- Description (read-only) -->
+                            <div class="w-6">
+                                <mat-form-field appearance="outline" floatLabel="always"
+                                                class="w-100 description-field">
+                                    <mat-label>Description</mat-label>
+
+                                    <textarea
+                                        matInput
+                                        rows="7"
+                                        readonly
+                                        [value]="demoInput.text || '-'"
+                                        placeholder="-"
+                                        disabled
+                                    ></textarea>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Image (read-only) -->
+                            <div class="w-6">
+                                <div
+                                    class="image-upload readonly"
+                                >
+                                    <span class="label">Image</span>
+
+                                    @if (demoInput.image) {
+                                        <img
+                                            [src]="demoInput.image"
+                                            loading="lazy"
+                                            alt="Pottery Image"/>
+                                    } @else {
+                                        <div class="placeholder">
+                                            <mat-icon class="upload-icon">image_not_supported</mat-icon>
+                                            <p>No image provided</p>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card p-4 flex column justify-center prediction chronology">
+                            <div class="badge accent card-title">
+                                <mat-icon>auto_awesome</mat-icon>
+                                <span>
+                            Predicted Year Range
+                            </span>
+                            </div>
+                            <div class="display m-0">{{ formatYear(demoPrediction.start_year) }}
+                                – {{ formatYear(demoPrediction.end_year) }}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="w-6 card flex column gap-3 justify-center align-start">
+                        <div class=" p-4 flex column gap-4 justify-center align-start">
+                            <div class="flex column gap-2">
+                                <h5>Upload a description and/or image of pottery, and the app does the rest:</h5>
+                                <p>
+                                    A neural network model, trained on a set of pottery items from the Ancient Agora of
+                                    Athens,
+                                    analyzes stylistic and textual cues to propose a chronology. Then it returns the most
+                                    probable
+                                    historical period or exact date range, including confidence information.
+                                </p>
+                            </div>
+
+
+                            <a
+                                matButton="filled"
+                                color="primary"
+                                routerLink="/admin/predictions/new"
+                            >
+                                <mat-icon>auto_awesome</mat-icon>
+                                <span>Get Started</span>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex row wrap justify-between align-stretch gy-4">
+            <div class="w-100 px-2 flex column gy-2">
+                <h3 class="m-0">
+                    Expert Feedback & Retraining
+                </h3>
+            </div>
+
+            <div class="w-100 ">
+                <div class="gy-4 flex row wrap justify-between align-stretch">
+                    <div class="w-6 flex column gap-4">
+                        <div class="card p-4 flex column justify-center prediction chronology">
+                            <div class="badge accent card-title">
+                                <mat-icon>auto_awesome</mat-icon>
+                                <span>
+                            Predicted Historical Period
+                        </span>
+                            </div>
+                            <div class="flex row nowrap justify-start align-center gap-2">
+                                <div class="indicator"
+                                     [ngStyle]="{'background-color': getColor(demoFeedback.predicted_period)}"></div>
+                                <div class="display m-0">{{ demoFeedback.predicted_period }}</div>
+                            </div>
+                        </div>
+
+                        <div class="card p-4 flex column justify-center true chronology">
+                            <div class="badge primary card-title success-icon">
+                                <mat-icon>check_small</mat-icon>
+                                <span>True Historical Period</span>
+                            </div>
+                            <div class="flex row nowrap justify-start align-center gap-2">
+                                <div class="indicator"
+                                     [ngStyle]="{'background-color': getColor(demoFeedback.true_period)}"></div>
+                                <div
+                                    class="display m-0">{{ demoFeedback.true_period }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-6 card flex column gap-3 justify-center align-start">
+                        <div class="p-4 flex column gap-2">
+                            <h5>After each prediction, you can confirm or correct the result:</h5>
+                            <p>
+                                This feedback becomes part of the dataset used to re-train the model. This helps the system
+                                learn from real archaeological expertise and make better, stronger predictions.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <app-footer></app-footer>
     </div>
+
+
+
 </div>
