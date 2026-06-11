@@ -6,7 +6,6 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {ActivatedRoute, Router} from '@angular/router';
 import {Auth} from '../../core/services/auth';
 import {Alert} from '../../core/services/alert';
-import {finalize} from 'rxjs';
 import {FormFieldError} from '../../core/services/form-field-error';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {Loader} from '../../core/services/loader';

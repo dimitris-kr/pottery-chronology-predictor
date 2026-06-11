@@ -2,7 +2,9 @@
     <div class="card p-4 flex column gap-6 footer">
         <div class="flex row wrap gy-3 justify-between align-stretch logo-container">
             <div class="w-3">
-                <img ngSrc="assets/logo.png" alt="logo" height="240" width="591" class="logo">
+                <a routerLink="/">
+                    <img ngSrc="assets/logo.png" alt="logo" height="240" width="591" class="logo">
+                </a>
             </div>
 
             <div class="w-9 flex row wrap justify-between align-center gy-1">
@@ -19,21 +21,78 @@
             <div class="flex row wrap gy-3 justify-between align-center">
                 <div class="w-8">
                     <p class="m-0">
-                        The system has been developed by Dimitris Krikonis as part of the MSc thesis for the Data
+                        The system has been developed by {{ myName }} as part of the MSc thesis for the Data
                         Science & Information Technologies program at the Department of Informatics and
                         Telecommunications, National and Kapodistrian University of Athens, in collaboration with the
                         American School of Classical Studies at Athens with data from the Ancient Agora of Athens.
                     </p>
                 </div>
                 <div class="w-4 flex row wrap justify-between align-center gx-1 gy-2">
-                    @for (org of orgs; track org) {
-                        <a [href]="org.link" target="_blank" class="org-logo">
+                    @for (orgLink of orgLinks; track orgLink) {
+                        <a [href]="orgLink.url" target="_blank" class="org-logo">
                             <img
-                                [src]="org.logo"
+                                [src]="orgLink.logo"
                                 loading="lazy"
                                 alt="org logo"/>
                         </a>
                     }
+                </div>
+            </div>
+        </div>
+
+        <div class="flex column gap-2">
+            <h6>Acknowledgments</h6>
+            <div class="flex row wrap gy-3 justify-between align-stretch">
+                @for (ack of acknowledgements; track ack.name) {
+                    <div class="person flex column gap-2 py-2 w-4">
+                        <h5 class="m-0">
+                            {{ ack.name }}
+                        </h5>
+                        <hr>
+                        <p class="bold">
+                            {{ ack.role }}
+                        </p>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="flex column gap-2">
+            <div class="flex row wrap gy-3 justify-between align-stretch">
+
+                <div class="w-4 flex column gap-2">
+                    <h6>Contact Info</h6>
+                    <div class="person flex column gap-2 py-2 w-100">
+                        <h5 class="m-0">
+                            {{ myName }}
+                        </h5>
+                        <hr>
+                        <div class="flex column justify-start align-start">
+                            @for (contactLink of contactLinks; track contactLink) {
+                                <a matButton [href]="contactLink.url" target="_blank" class="btn-sm btn-link">
+                                    @if (contactLink.hasOwnProperty('mat_icon')) {
+                                        <mat-icon>{{ contactLink.mat_icon }}</mat-icon>
+                                    } @else if (contactLink.hasOwnProperty('svg_icon') && contactLink.svg_icon) {
+                                        <mat-icon [svgIcon]="contactLink.svg_icon"></mat-icon>
+                                    }
+                                    {{ contactLink.label }}
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="w-8 flex column gap-2">
+                    <h6>Project Links</h6>
+                    <div class="flex row wrap justify-between align-start gy-2 project-link">
+                        @for (projectLink of projectLinks; track projectLink) {
+                            <a matButton [href]="projectLink.url" target="_blank" class="w-6 border">
+                                @if (projectLink.svg_icon) {
+                                    <mat-icon [svgIcon]="projectLink.svg_icon"></mat-icon>
+                                }
+                                {{ projectLink.label }}
+                            </a>
+                        }
+                    </div>
                 </div>
             </div>
         </div>

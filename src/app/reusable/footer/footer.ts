@@ -1,31 +1,39 @@
 import { Component } from '@angular/core';
 import {NgOptimizedImage} from '@angular/common';
+import {MatIcon} from '@angular/material/icon';
+import {MatButton} from '@angular/material/button';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-footer',
     imports: [
-        NgOptimizedImage
+        NgOptimizedImage,
+        MatIcon,
+        MatButton,
+        RouterLink
     ],
   templateUrl: './footer.html',
   styleUrl: './footer.scss',
 })
 export class Footer {
-    orgs = [
+    myName = "Dimitris Krikonis";
+
+    orgLinks = [
         {
             logo: 'assets/footer/dsit_logo.png',
-            link: 'https://dsit.di.uoa.gr/',
+            url: 'https://dsit.di.uoa.gr/',
         },
         {
             logo: 'assets/footer/dit_logo.png',
-            link: 'https://www.di.uoa.gr/',
+            url: 'https://www.di.uoa.gr/',
         },
         {
             logo: 'assets/footer/uoa_logo.png',
-            link: 'https://www.uoa.gr/',
+            url: 'https://www.uoa.gr/',
         },
         {
             logo: 'assets/footer/ascsa_logo.png',
-            link: 'https://www.ascsa.edu.gr/',
+            url: 'https://www.ascsa.edu.gr/',
         },
     ]
 
@@ -44,29 +52,34 @@ export class Footer {
         }
     ];
 
-    contact = [
+    contactLinks = [
         {
             mat_icon: 'mail',
             label: 'dimitriskr@di.uoa.gr',
-            link: 'mailto:dimitriskr@di.uoa.gr',
+            url: 'mailto:dimitriskr@di.uoa.gr',
         },
         {
-            svg_icon: 'src/assets/footer/linkedin.svg',
+            svg_icon: 'linkedin',
             label: '@dimitris-krikonis',
-            link: 'https://www.linkedin.com/in/dimitris-krikonis/',
+            url: 'https://www.linkedin.com/in/dimitris-krikonis/',
         },
     ];
 
     projectLinks = [
         {
-            svg_icon: 'src/assets/footer/github.svg',
+            svg_icon: 'github',
             label: 'App Frontend GH Repository',
-            link: 'https://github.com/dimitris-kr/pottery-chronology-predictor',
+            url: 'https://github.com/dimitris-kr/pottery-chronology-predictor',
         },
         {
-            svg_icon: 'src/assets/footer/huggingface.svg',
+            svg_icon: 'huggingface',
             label: 'App Backend on HF Spaces',
-            link: 'https://huggingface.co/spaces/dimitriskr/pottery-chronology-predictor-api',
+            url: 'https://huggingface.co/spaces/dimitriskr/pottery-chronology-predictor-api',
+        },
+        {
+            svg_icon: 'github',
+            label: 'ML IPYNBs & Full Backend GH Repository',
+            url: 'https://github.com/dimitris-kr/AgoraPottery',
         },
     ];
 

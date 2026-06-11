@@ -283,11 +283,14 @@ mat-icon {
 // BUTTONS
 
 .mdc-button.mat-mdc-button,
-.mdc-button.mat-mdc-button .mdc-button__ripple,
+//.mdc-button.mat-mdc-button .mdc-button__ripple,
 .mdc-button.mat-mdc-unelevated-button,
-.mdc-button.mat-mdc-unelevated-button .mdc-button__ripple {
+//.mdc-button.mat-mdc-unelevated-button .mdc-button__ripple
+    {
     border-radius: var(--radius-sm);
-    height: 46px;
+    //height: 46px;
+    --mat-button-text-container-height: 46px;
+    --mat-button-filled-container-height: 46px;
 }
 
 /*.mdc-button[matbutton="filled"].mat-mdc-unelevated-button:not(:disabled),

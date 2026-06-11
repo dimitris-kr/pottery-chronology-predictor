@@ -139,12 +139,14 @@
 .w-12 { width: 100% }
 
 @media only screen and (max-width: 920px) and (min-width: 767px) {
-    .w-1, .w-2, .w-3, .w-4, .w-5, .w-6, .w-7, .w-8, .w-9, .w-10, .w-11, .w-12, .w-auto {
-        width: 100%;
+    .admin-layout {
+        .w-1, .w-2, .w-3, .w-4, .w-5, .w-6, .w-7, .w-8, .w-9, .w-10, .w-11, .w-12, .w-auto {
+            width: 100%;
+        }
     }
 }
 
-@media only screen and (max-width: 680px) {
+@media only screen and (max-width: 700px) {
     .w-1, .w-2, .w-3, .w-4, .w-5, .w-6, .w-7, .w-8, .w-9, .w-10, .w-11, .w-12, .w-auto {
         width: 100%;
     }

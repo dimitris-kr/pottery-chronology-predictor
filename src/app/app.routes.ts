@@ -56,6 +56,7 @@ export const routes: Routes = [
             {
                 path: 'about',
                 component: About,
+                data: { showFooter: true },
             },
             {
                 path: 'data',

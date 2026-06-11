@@ -1,56 +1,58 @@
 <div class="inner justify-center align-center">
-    <div class="inner-max flex column gap-5">
-        <div class="floating text-center">
-            <h2>Login</h2>
-            <p>Access the chronology prediction tools and manage your submissions.</p>
-        </div>
-        <div class="card flex column gap-2 p-4">
-            <form [formGroup]="form" (ngSubmit)="submit()" class="flex column gap-2">
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Username</mat-label>
-                    <input matInput formControlName="username" />
+    <div class="inner-max flex column justify-center align-center w-100">
+        <div class="w-100 flex column gap-5">
+            <div class="floating text-center">
+                <h2>Login</h2>
+                <p>Access the chronology prediction tools and manage your submissions.</p>
+            </div>
+            <div class="card flex column gap-2 p-4">
+                <form [formGroup]="form" (ngSubmit)="submit()" class="flex column gap-2">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Username</mat-label>
+                        <input matInput formControlName="username" />
 
-                    <mat-error>
-                        @if (form.get('username')?.hasError('required')) {
-                            {{ ffError.msg('required') }}
-                        }
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Password</mat-label>
-                    <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password"/>
+                        <mat-error>
+                            @if (form.get('username')?.hasError('required')) {
+                                {{ ffError.msg('required') }}
+                            }
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Password</mat-label>
+                        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password"/>
+                        <button
+                            mat-icon-button
+                            matSuffix
+                            type="button"
+                            (click)="togglePasswordVisibility($event)"
+                            [attr.aria-label]="'Hide password'"
+                            [attr.aria-pressed]="hidePassword"
+                        >
+                            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                        <mat-error>
+                            @if (form.get('password')?.hasError('required')) {
+                                {{ ffError.msg('required') }}
+                            }
+                        </mat-error>
+                    </mat-form-field>
+
                     <button
-                        mat-icon-button
-                        matSuffix
-                        type="button"
-                        (click)="togglePasswordVisibility($event)"
-                        [attr.aria-label]="'Hide password'"
-                        [attr.aria-pressed]="hidePassword"
-                    >
-                        <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        mat-flat-button
+                        color="primary"
+                        class="w-100"
+                        type="submit"
+                        [disabled]="(loader.loading$ | async) || form.invalid"
+                    >@if (loader.loading$ | async){
+                        Signing in…
+                    } @else {
+                        Login
+                    }
                     </button>
-                    <mat-error>
-                        @if (form.get('password')?.hasError('required')) {
-                            {{ ffError.msg('required') }}
-                        }
-                    </mat-error>
-                </mat-form-field>
+                </form>
 
-                <button
-                    mat-flat-button
-                    color="primary"
-                    class="w-100"
-                    type="submit"
-                    [disabled]="(loader.loading$ | async) || form.invalid"
-                >@if (loader.loading$ | async){
-                    Signing in…
-                } @else {
-                    Login
-                }
-                </button>
-            </form>
-
+            </div>
         </div>
-    </div>
 
+    </div>
 </div>

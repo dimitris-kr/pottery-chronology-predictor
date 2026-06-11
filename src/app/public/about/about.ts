@@ -1,12 +1,10 @@
 import {Component} from '@angular/core';
-import {NgOptimizedImage, NgStyle} from "@angular/common";
+import {NgStyle} from "@angular/common";
 import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {RouterLink} from '@angular/router';
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {formatYear, getColor} from '../../core/utils/helpers';
-import {isClassification} from '../../core/models/prediction';
-import {Footer} from '../../reusable/footer/footer';
 
 @Component({
     selector: 'app-about',
@@ -17,8 +15,7 @@ import {Footer} from '../../reusable/footer/footer';
         MatFormField,
         MatInput,
         MatLabel,
-        NgStyle,
-        Footer
+        NgStyle
     ],
     templateUrl: './about.html',
     styleUrl: './about.scss',
@@ -42,5 +39,4 @@ export class About {
 
     protected readonly getColor = getColor;
     protected readonly formatYear = formatYear;
-    protected readonly isClassification = isClassification;
 }
